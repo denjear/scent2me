@@ -10,7 +10,7 @@ export default function OnboardingPage() {
       {/* Logo / Header */}
       <div className="mt-10">
         <Image
-          src="/logo.png"
+          src="/images/logo.png"
           alt="Scent2Me Logo"
           width={140}
           height={140}
