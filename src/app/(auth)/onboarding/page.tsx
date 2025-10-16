@@ -1,51 +1,78 @@
- 'use client';
-import { useRouter } from 'next/navigation';
+'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { CircleUser, UsersRound } from 'lucide-react';
 
 export default function OnboardingPage() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen bg-white py-10 px-6">
-      {/* Logo / Header */}
-      <div className="mt-10">
-        <Image
-          src="/images/logo.png"
-          alt="Scent2Me Logo"
-          width={140}
-          height={140}
-          priority
-        />
-      </div>
+    <div className="min-h-screen w-full flex bg-[#f8f2eb]"> 
+      {/* kiri */}
+      <div className="w-1/2 flex flex-col justify-center items-center bg-white px-16 rounded-r-[40px] drop-shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+        <div className="flex items-center mb-3">
+          <Image
+            src="/images/logo_polos.png"
+            alt="Scent2Me logo"
+            width={120}
+            height={120}
+          />
+          <h1 className="text-5xl font-bold text-[#333]">Scent2Me</h1>
+        </div>
 
-      {/* Text Section */}
-      <div className="text-center mt-10">
-        <h1 className="text-2xl font-semibold text-gray-800">Welcome to Scent2Me</h1>
-        <p className="text-gray-500 mt-2">
-          Find your perfect perfume — personalized for you.
+        <p className="text-center text-gray-600 mb-8 max-w-md text-xl">
+          Welcome to <span className="font-semibold">Scent2Me</span>! Sign in to
+          discover your perfect fragrance!
         </p>
+
+        <div className="flex flex-col items-center ">
+          <button
+            onClick={() => router.push('/login')}
+            className="flex items-center justify-center w-100 py-4 bg-[#f3eadf] hover:bg-[#e8d9ca] rounded-xl text-[#222] font-bold shadow-sm cursor-pointer text-lg"
+          >
+            <UsersRound className="mr-3 w-8 h-8"/> Login with Account
+          </button>
+
+          <div className="flex items-center w-100 my-4">
+            <hr className="flex-grow border-gray-300" />
+            <span className="mx-3 text-gray-400 text-sm">or</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+
+          <button
+            onClick={() => router.push('/homepage')}
+            className="flex items-center justify-center w-100 py-4 bg-[#f3eadf] hover:bg-[#e8d9ca] rounded-xl text-[#222] font-bold shadow-sm cursor-pointer text-lg"
+          >
+            <CircleUser className='mr-3 w-8 h-8'/>Login as Guest
+          </button>
+
+          <p className="text-sm text-gray-400 mt-6">
+            Don’t have an account?{' '}
+            <button
+              onClick={() => router.push('/register')}
+              className="text-[#5c5a9f] underline cursor-pointer font-semibold"
+            >
+              Sign up now!
+            </button>
+          </p>
+
+          <p className="text-[#A3B18A] mt-6">
+            Just one step to find the perfume that suits you!
+          </p>
+        </div>
       </div>
 
-      {/* Buttons Section */}
-      <div className="flex flex-col gap-4 w-full max-w-xs mt-auto mb-16">
-        <button
-          onClick={() => router.push('/homepage')}
-          className="w-full py-3 bg-[#A3B18A] text-white rounded-full font-medium hover:opacity-90 transition"
-        >
-          Continue as Guest
-        </button>
-        <button
-          onClick={() => router.push('/login')}
-          className="w-full py-3 border border-[#A3B18A] text-[#A3B18A] rounded-full font-medium hover:bg-[#A3B18A]/10 transition"
-        >
-          Login
-        </button>
+      {/* kanan */}
+      <div className="w-1/2 bg-[#f8f2eb] flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center px-8">
+          <Image
+            src="/images/logo.png"
+            alt="Scent2Me Large"
+            width={500}
+            height={500}
+          />
+        </div>
       </div>
-
-      {/* Footer */}
-      <p className="text-xs text-gray-400">
-        Scent2Me © 2025 All Rights Reserved.
-      </p>
     </div>
   );
 }
