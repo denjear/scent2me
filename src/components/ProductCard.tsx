@@ -12,7 +12,7 @@ type ProductCardProps = {
 export default function ProductCard({ imageUrl, name, brand, price, tags }: ProductCardProps) {
   return (
     // Kontainer kartu utama
-    <div className="bg-white rounded-2xl shadow-md p-5 flex gap-5 items-center w-full max-w-sm">
+    <div className="bg-white rounded-2xl shadow-md p-9 flex gap-6 items-center w-full max-w-md">
       
       {/* Gambar Produk */}
       <div className="flex-shrink-0">

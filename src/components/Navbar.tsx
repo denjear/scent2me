@@ -9,10 +9,10 @@ export default function Navbar() {
         {/* === Bagian Kiri: Logo dan Nama Brand === */}
         <Link href="/homepage" className="flex items-center gap-3">
           <Image
-            src="/images/logo.png"
+            src="/images/logo_polos.png"
             alt="Scent2Me Logo"
-            width={40}
-            height={40}
+            width={50}
+            height={50}
             priority
           />
           {/* Menggunakan nilai HEX untuk warna teks */}

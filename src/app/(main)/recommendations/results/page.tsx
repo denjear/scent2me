@@ -3,24 +3,24 @@ import ProductCard from '@/components/ProductCard';
 // Ini adalah data dummy. Nanti, data ini akan datang dari API.
 const recommendedProducts = [
   {
-    imageUrl: '/images/perfume.png',
+    imageUrl: '/images/parfumdummy.jpg',
     name: 'Rose Lumiere',
     brand: 'ARMAND BASI',
-    price: 'RP 500.000',
+    price: 'Rp. 500.000',
     tags: 'Floral, Citrus',
   },
   {
-    imageUrl: '/images/perfume.png',
+    imageUrl: '/images/parfumdummy.jpg',
     name: 'Rose Lumiere',
     brand: 'ARMAND BASI',
-    price: 'RP 500.000',
+    price: 'Rp. 500.000',
     tags: 'Floral, Citrus',
   },
   {
-    imageUrl: '/images/perfume.png',
+    imageUrl: '/images/parfumdummy.jpg',
     name: 'Rose Lumiere',
     brand: 'ARMAND BASI',
-    price: 'RP 500.000',
+    price: 'Rp. 500.000',
     tags: 'Floral, Citrus',
   },
 ];
@@ -33,7 +33,7 @@ export default function RecommendationResultsPage() {
         {/* === Bagian Header === */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-[#4B4B4B]">
-            Reccomendation For You
+            Recommendation For You
           </h1>
           <p className="mt-2 text-md text-gray-500">
             Based on your preferences, this is your perfume
