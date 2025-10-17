@@ -50,13 +50,11 @@ Copy code
 ## 🧪 Cara Menjalankan
 
 ### 1️⃣ Frontend (Next.js)
-
-bash
+```bash
 cd web
 npm install
 npm run dev
 # buka http://localhost:3000
-
 2️⃣ Backend (FastAPI)
 bash
 Copy code
@@ -64,13 +62,12 @@ cd rec-service
 pip install -r requirements.txt
 uvicorn src.serve:app --reload --port 8000
 # cek http://localhost:8000/health
-
 3️⃣ Docker Compose (opsional)
 bash
 Copy code
 docker-compose up --build
-# web di http://localhost:3000, backend di http://localhost:8000
-
+# web di http://localhost:3000
+# backend di http://localhost:8000
 💡 Fitur Utama
 - Login & Onboarding Form
 - Homepage dengan kategori aroma
@@ -85,4 +82,3 @@ docker-compose up --build
 - Improve UI & UX (dark mode, loading state)
 - Deploy ke Vercel (frontend) & Render/AWS (backend)
 - Evaluasi model dengan Mean Average Precision (MAP@K)
-
