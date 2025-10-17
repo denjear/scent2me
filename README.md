@@ -1,6 +1,6 @@
 # 🌸 Scent2Me — Intelligent Perfume Recommendation Platform
 
-Scent2Me adalah **platform rekomendasi parfum berbasis AI** yang membantu pengguna menemukan parfum dengan aroma serupa dan tersedia untuk dibeli langsung di marketplace seperti **Tokopedia**.  
+Scent2Me adalah **platform rekomendasi parfum** yang membantu pengguna menemukan parfum dengan aroma serupa dan tersedia untuk dibeli langsung di marketplace seperti **Tokopedia**.  
 Proyek ini dikembangkan sebagai **Capstone Project Semester 7** dengan pendekatan **Content-Based & Context-Aware Recommendation System** menggunakan **Next.js + FastAPI**.
 
 ---
@@ -47,40 +47,16 @@ Copy code
 
 ---
 
-## 🧩 Struktur Project
-
-scent2me/
-├── web/ # Next.js frontend
-│ ├── app/ # Routing (auth, onboarding, homepage, dll)
-│ ├── components/ # UI components (navbar, form, grid)
-│ ├── lib/ # API helper ke FastAPI
-│ ├── public/ # Static assets
-│ └── package.json
-│
-├── rec-service/ # FastAPI backend untuk sistem rekomendasi
-│ ├── src/
-│ │ ├── serve.py # Endpoint API (by item, by profile)
-│ │ ├── features.py # TF-IDF, SBERT, FAISS, MMR
-│ │ └── schemas.py # Model request/response
-│ ├── artifacts/ # Artefak hasil training (tfidf.pkl, embeddings.npy, dsb)
-│ ├── requirements.txt
-│ └── Dockerfile
-│
-└── docker-compose.yml # Jalankan web + backend bersamaan
-
-yaml
-Copy code
-
----
-
 ## 🧪 Cara Menjalankan
 
 ### 1️⃣ Frontend (Next.js)
-```bash
+
+bash
 cd web
 npm install
 npm run dev
 # buka http://localhost:3000
+
 2️⃣ Backend (FastAPI)
 bash
 Copy code
@@ -88,11 +64,13 @@ cd rec-service
 pip install -r requirements.txt
 uvicorn src.serve:app --reload --port 8000
 # cek http://localhost:8000/health
+
 3️⃣ Docker Compose (opsional)
 bash
 Copy code
 docker-compose up --build
 # web di http://localhost:3000, backend di http://localhost:8000
+
 💡 Fitur Utama
 - Login & Onboarding Form
 - Homepage dengan kategori aroma
@@ -102,13 +80,9 @@ docker-compose up --build
 - Arsitektur modular (Next.js frontend × FastAPI backend)
 
 📊 Rencana Pengembangan
- Tambah Collaborative Filtering saat data user sudah tersedia
-
- Integrasi database untuk logging klik/simpan
-
- Improve UI & UX (dark mode, loading state)
-
- Deploy ke Vercel (frontend) & Render/AWS (backend)
-
- Evaluasi model dengan Mean Average Precision (MAP@K)
+- Tambah Collaborative Filtering saat data user sudah tersedia
+- Integrasi database untuk logging klik/simpan
+- Improve UI & UX (dark mode, loading state)
+- Deploy ke Vercel (frontend) & Render/AWS (backend)
+- Evaluasi model dengan Mean Average Precision (MAP@K)
 
