@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import '../styles/globals.css';
 
 export default function SplashPage() {
   const router = useRouter();
@@ -9,7 +10,7 @@ export default function SplashPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/onboarding');
-    }, 12500); // 2.5 detik
+    }, 6000); 
     return () => clearTimeout(timer);
   }, [router]);
 
@@ -22,7 +23,7 @@ export default function SplashPage() {
         width={500}
         height={500}
         priority
-        className="animate-pulse"
+        className="animate-fade-scale"
       />
 
       {/* Footer text */}

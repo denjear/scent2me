@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function RecommendationsPage() {
+export default function Preferences() {
     const router = useRouter();
 
     type SelectedOptions = {
@@ -35,7 +35,7 @@ export default function RecommendationsPage() {
     };
 
     const handleSubmit = () => {
-        router.push("/recommendations/results");
+        router.push("/recommendations");
     };
 
     return (
@@ -176,7 +176,7 @@ export default function RecommendationsPage() {
                 <div className="flex justify-center mt-10">
                     <button
                         onClick={handleSubmit}
-                        className="px-6 py-3 bg-[#a8bfa5] text-white rounded-xl hover:bg-[#90a88d] transition cursor-pointer"
+                        className="px-6 py-3 bg-[#a8bfa5] text-white rounded-xl hover:bg-[#90a88d] transition"
                     >
                         Get Recommendation
                     </button>
