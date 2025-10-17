@@ -33,7 +33,7 @@ export default function RecommendationResultsPage() {
         {/* === Bagian Header === */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-[#4B4B4B]">
-            Reccomendation For You
+            Recomendation For You
           </h1>
           <p className="mt-2 text-md text-gray-500">
             Based on your preferences, this is your perfume
