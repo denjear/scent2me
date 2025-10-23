@@ -1,8 +1,23 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ============================
+# 🌐 FRONTEND (Next.js)
+# ============================
 
-# dependencies
-/node_modules
-/.pnp
+web/node_modules/
+web/.next/
+web/out/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js build outputs
+.next/
+out/
+build/
+
+# Yarn / pnpm
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -10,32 +25,42 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
+# Env
 .env*
-
-# vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Coverage / Testing
+coverage/
+
+# ============================
+# 🐍 BACKEND (FastAPI)
+# ============================
+
+rec-service/venv/
+rec-service/__pycache__/
+rec-service/**/*.pyc
+rec-service/**/*.pyo
+rec-service/**/*.pyd
+
+# Artifacts (model / TF-IDF files)
+rec-service/artifacts/*
+!rec-service/artifacts/.gitkeep
+
+# Local DBs / Cache
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================
+# ⚙️ SYSTEM / EDITOR
+# ============================
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.pem
