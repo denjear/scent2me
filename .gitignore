@@ -47,8 +47,6 @@ rec-service/**/*.pyo
 rec-service/**/*.pyd
 
 # Artifacts (model / TF-IDF files)
-rec-service/artifacts/*
-!rec-service/artifacts/.gitkeep
 
 # Local DBs / Cache
 *.db
