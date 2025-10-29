@@ -85,6 +85,74 @@ def health_check():
 
 
 # ------------------------------
+# GET /search  (search by name and/or brand)
+# ------------------------------
+@app.get("/search")
+def search(name: Optional[str] = Query(None), brand: Optional[str] = Query(None), top_k: int = 12):
+    if not name and not brand:
+        return {"error": "Provide at least 'name' or 'brand' query parameter"}
+
+    mask = np.ones(len(meta), dtype=bool)
+
+    if name:
+        name_lc = _norm(name)
+        mask = mask & meta["name_display"].astype(str).map(_norm).str.contains(name_lc, na=False).values
+
+    if brand:
+        brand_lc = _norm(brand)
+        mask = mask & meta["brand_display"].astype(str).map(_norm).str.contains(brand_lc, na=False).values
+
+    if not mask.any():
+        return {"count": 0, "results": []}
+
+    order = np.where(mask)[0][:top_k]
+
+    cols = ["id"] if "id" in meta.columns else []
+    cols += ["name_display", "brand_display", "image_url", "buy_url", "price_num", "rating_num"]
+    result = meta.iloc[order][cols].copy()
+
+    return {"count": int(len(result)), "results": result.to_dict(orient="records")}
+
+
+# ------------------------------
+# GET /trending  (top-rated perfumes)
+# ------------------------------
+@app.get("/trending")
+def trending(top_k: int = 12):
+    # Sort by rating_num descending, drop NaN
+    sorted_meta = meta.dropna(subset=["rating_num"]).sort_values("rating_num", ascending=False)
+    order = sorted_meta.index[:top_k]
+
+    cols = ["id"] if "id" in meta.columns else []
+    cols += ["name_display", "brand_display", "image_url", "buy_url", "price_num", "rating_num"]
+    result = meta.iloc[order][cols].copy()
+
+    return {"count": int(len(result)), "results": result.to_dict(orient="records")}
+
+
+# ------------------------------
+# GET /random  (random perfume)
+# ------------------------------
+@app.get("/random")
+def random_perfume():
+    idx = np.random.choice(len(meta))
+    cols = ["id"] if "id" in meta.columns else []
+    cols += ["name_display", "brand_display", "image_url", "buy_url", "price_num", "rating_num"]
+    result = meta.iloc[[idx]][cols].copy()
+
+    return {"count": 1, "results": result.to_dict(orient="records")}
+
+
+# ------------------------------
+# GET /brands  (unique brands for dropdown)
+# ------------------------------
+@app.get("/brands")
+def get_brands():
+    brands = meta["brand_display"].dropna().unique().tolist()
+    return {"brands": sorted(brands)}
+
+
+# ------------------------------
 # GET /recommend  (by reference perfume)
 # ------------------------------
 @app.get("/recommend")
