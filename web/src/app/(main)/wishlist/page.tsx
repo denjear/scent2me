@@ -1,9 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ProductCard from "@/components/ProductCard"; // ✅ import component card
+
+type Product = {
+  id?: string;
+  image_url?: string;
+  name_display: string;
+  brand_display: string;
+  price_num?: number;
+  rating_num?: number;
+  tags?: string;
+  buy_url?: string;
+};
 
 export default function WishlistPage() {
-  const [wishlist, setWishlist] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,74 +33,62 @@ export default function WishlistPage() {
 
   if (loading)
     return (
-      <div className="p-10 text-center text-gray-600">Loading wishlist...</div>
+      <div className="p-10 text-center text-gray-600 font-poppins">
+        Loading wishlist...
+      </div>
     );
 
   return (
-    <main className="min-h-screen bg-[#f8f6ef] px-6 md:px-20 py-12 font-poppins">
-      <h1 className="text-3xl font-bold mb-10 text-center text-[#4B4B4B]">
-        Your Wishlist
-      </h1>
+    <main className="min-h-screen bg-[#f8f6ef] font-poppins">
+      {/* Container mirip Explore */}
+      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12">
+        {/* Header */}
+        <h1 className="text-4xl font-semibold mb-10 text-center text-[#4B4B4B]">
+          Your Wishlist
+        </h1>
 
-      {wishlist.length === 0 ? (
-        <p className="text-center text-gray-500">
-          No perfumes saved yet. Go find your perfect scent!
-        </p>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mb-12">
-          {wishlist.map((item, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col"
-            >
-              {/* Image Section (same ratio as recommendations) */}
-              <div className="w-full h-[280px] bg-gray-100 flex items-center justify-center overflow-hidden">
-                <img
-                  src={item.image_url || "/images/parfumdummy.jpg"}
-                  alt={item.name_display}
-                  className="object-contain w-full h-full scale-100 hover:scale-105 transition-transform duration-300"
+        {/* Empty State */}
+        {wishlist.length === 0 ? (
+          <p className="text-center text-gray-500 text-lg">
+            No perfumes saved yet. Go find your perfect scent!
+          </p>
+        ) : (
+          <>
+            {/* ✅ Reuse ProductCard component */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mb-12">
+              {wishlist.map((item, idx) => (
+                <ProductCard
+                  key={item.id || idx}
+                  imageUrl={item.image_url || "/images/parfumdummy.jpg"}
+                  name={item.name_display}
+                  brand={item.brand_display}
+                  price={
+                    typeof item.price_num === "number"
+                      ? `Rp ${item.price_num.toLocaleString("id-ID")}`
+                      : "N/A"
+                  }
+                  tags={item.tags}
+                  buy_url={item.buy_url}
+                  rating_num={item.rating_num}
                 />
-              </div>
-
-              {/* Info Section */}
-              <div className="p-4 flex flex-col flex-grow">
-                <h3 className="font-semibold text-lg text-[#1a1a1a] leading-tight line-clamp-2">
-                  {item.name_display}
-                </h3>
-                <p className="text-sm text-gray-500 mb-1">
-                  {item.brand_display}
-                </p>
-                <p className="text-[#4B4B4B] font-semibold mb-2">
-                  {item.price_num
-                    ? `Rp ${item.price_num.toLocaleString("id-ID")}`
-                    : "N/A"}
-                </p>
-                <a
-                  href={item.buy_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#7AA885] text-sm underline hover:text-[#62866d] mt-auto"
-                >
-                  Tap to view product →
-                </a>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
 
-      {wishlist.length > 0 && (
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={clearWishlist}
-            className="bg-[#9DBE9C] text-white px-6 py-3 rounded-lg hover:bg-[#8CAF8C] font-semibold transition-colors"
-          >
-            Clear Wishlist
-          </button>
-        </div>
-      )}
+            {/* Clear Wishlist Button */}
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={clearWishlist}
+                className="bg-[#9DBE9C] text-white px-6 py-3 rounded-lg hover:bg-[#8CAF8C] font-semibold transition-colors"
+              >
+                Clear Wishlist
+              </button>
+            </div>
+          </>
+        )}
+      </div>
 
-      <footer className="text-center py-8 text-gray-500 text-sm mt-16">
+      {/* Footer */}
+      <footer className="text-center py-8 text-gray-500 text-sm mt-8">
         Scent2Me © 2025 All Rights Reserved.
       </footer>
     </main>
