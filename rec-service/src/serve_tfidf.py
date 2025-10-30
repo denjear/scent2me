@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query, Body
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Request
 from pydantic import BaseModel
 from typing import List, Optional, Union
 import pandas as pd
@@ -9,6 +10,8 @@ from joblib import load
 import scipy.sparse as sp
 import os
 import re
+import json
+
 
 app = FastAPI(title="Scent2Me Recommendation API")
 
@@ -335,3 +338,62 @@ def recommend_by_preference(req: PreferenceRequest):
     except Exception as e:
         print("❌ Error in /recommend/preference:", e)
         return {"error": str(e)}
+
+# ------------------------------
+# WISHLIST ENDPOINTS
+# ------------------------------
+
+WISHLIST_PATH = os.path.join(ART_DIR, "wishlist.json")
+
+# pastikan file wishlist ada
+if not os.path.exists(WISHLIST_PATH):
+    with open(WISHLIST_PATH, "w") as f:
+        json.dump([], f)
+
+
+@app.get("/wishlist")
+def get_wishlist():
+    """Ambil semua parfum yang tersimpan di wishlist"""
+    try:
+        with open(WISHLIST_PATH, "r") as f:
+            wishlist = json.load(f)
+        return {"wishlist": wishlist}
+    except Exception as e:
+        return {"error": f"Failed to read wishlist: {e}"}
+
+
+@app.post("/wishlist/add")
+async def add_to_wishlist(request: Request):
+    """Tambah satu atau beberapa parfum ke wishlist"""
+    try:
+        new_items = await request.json()
+        if not isinstance(new_items, list):
+            new_items = [new_items]
+
+        with open(WISHLIST_PATH, "r") as f:
+            wishlist = json.load(f)
+
+        # Hindari duplikasi berdasarkan name_display
+        existing_names = {item["name_display"] for item in wishlist if "name_display" in item}
+        for item in new_items:
+            if item.get("name_display") not in existing_names:
+                wishlist.append(item)
+
+        with open(WISHLIST_PATH, "w") as f:
+            json.dump(wishlist, f, indent=2)
+
+        return {"message": "Added to wishlist", "count": len(wishlist)}
+
+    except Exception as e:
+        return {"error": f"Failed to add wishlist: {e}"}
+
+
+@app.post("/wishlist/clear")
+def clear_wishlist():
+    """Hapus semua isi wishlist"""
+    try:
+        with open(WISHLIST_PATH, "w") as f:
+            json.dump([], f)
+        return {"message": "Wishlist cleared"}
+    except Exception as e:
+        return {"error": f"Failed to clear wishlist: {e}"}

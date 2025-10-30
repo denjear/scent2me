@@ -49,6 +49,27 @@ export default function RecommendationResultsPage() {
     }
   }, [router]);
 
+  // ✅ Tambahkan fungsi untuk simpan wishlist
+  const handleSaveRecommendation = async () => {
+    if (!results.length) return alert("No results to save!");
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/wishlist/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(results),
+      });
+
+      if (!res.ok) throw new Error("Failed to save wishlist");
+
+      alert("✅ Saved to wishlist!");
+      router.push("/wishlist"); // redirect ke page wishlist
+    } catch (err) {
+      console.error("Error saving wishlist:", err);
+      alert("❌ Failed to save wishlist.");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#f8f6ef] text-gray-700">
@@ -62,7 +83,7 @@ export default function RecommendationResultsPage() {
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#f8f6ef] text-gray-700">
         <p className="text-lg mb-4">No recommendations found 😢</p>
         <button
-          onClick={() => router.push("/recommendation")}
+          onClick={() => router.push("/recommendations")}
           className="px-5 py-2 bg-[#a8bfa5] text-white rounded-lg hover:bg-[#8fa98d] transition"
         >
           Back to Preferences
@@ -104,25 +125,23 @@ export default function RecommendationResultsPage() {
           ))}
         </div>
 
-       {/* Actions */}
+        {/* Actions */}
         <div className="flex items-center gap-3 justify-center">
+          {/* ✅ Save to Wishlist */}
           <button
+            onClick={handleSaveRecommendation}
             className="bg-[#A3B899] text-white px-6 py-3 rounded-lg hover:bg-[#93a78a] transition-colors"
-            // TODO: implement save to wishlist
-            onClick={() => alert("Coming soon: save to wishlist")}
           >
             Save Recommendation
           </button>
-          
-          {/* --- TOMBOL YANG DIPERBAIKI --- */}
+
+          {/* Refine Preferences */}
           <button
             className="px-6 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 hover:bg-gray-100 transition"
             onClick={() => router.push("/recommendations")}
           >
             Refine Preferences
           </button>
-          {/* --- END PERBAIKAN --- */}
-
         </div>
       </div>
 
