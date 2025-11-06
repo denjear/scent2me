@@ -1,1 +1,57 @@
-[]
+[
+  {
+    "id": 237,
+    "name_display": "Parfum Rasasi Nafaeis Al Shaghaf Pour Femme For Women EDP 100 ml",
+    "brand_display": "avon",
+    "image_url": "https://images.tokopedia.net/img/cache/200-square/aphluv/1997/1/1/e3849ac619d343798c06d4d5442e7c9e~.jpeg.webp?ect=4g",
+    "buy_url": "https://www.tokopedia.com/gpi-lndonesia/rasasi-nafaeis-al-shaghaf-pour-femme-for-women-edp-100-ml?extParam=src%3Dshop%26whid%3D18962603&aff_unique_id=&channel=others&chain_key=",
+    "price_num": 480000,
+    "rating_num": 5,
+    "bag_text": "avon floral citrus fruity pink_grapefruit violet plum magnolia jasmine wild_orchid peach musk amber woody_notes",
+    "similarity": 0.13703435179318768
+  },
+  {
+    "id": 218,
+    "name_display": "Parfum Rue Broca by Afnan Pride Pour Femme for Women EDP 100 ml",
+    "brand_display": "avon",
+    "image_url": "https://images.tokopedia.net/img/cache/200-square/aphluv/1997/1/1/f1721326683142fd8f5d6ce826e44ea4~.jpeg.webp?ect=4g",
+    "buy_url": "https://www.tokopedia.com/gpi-lndonesia/parfum-rue-broca-by-afnan-pride-pour-femme-for-women-edp-100-ml-1729732823839378409?extParam=src%3Dshop%26whid%3D18962603&aff_unique_id=&channel=others&chain_key=",
+    "price_num": 260000,
+    "rating_num": 5,
+    "bag_text": "avon floral citrus fruity pink_grapefruit violet plum magnolia jasmine wild_orchid peach musk amber woody_notes",
+    "similarity": 0.13703435179318768
+  },
+  {
+    "id": 154,
+    "name_display": "Parfum Rasasi Daarej Pour Femme EDP 100 ml",
+    "brand_display": "avon",
+    "image_url": "https://images.tokopedia.net/img/cache/200-square/aphluv/1997/1/1/74d4a6b3fcaa4850b74cef6087d0c092~.jpeg.webp?ect=4g",
+    "buy_url": "https://www.tokopedia.com/gpi-lndonesia/rasasi-daarej-pour-femme-edp-100-ml?extParam=src%3Dshop%26whid%3D18962603&aff_unique_id=&channel=others&chain_key=",
+    "price_num": 300000,
+    "rating_num": 4.8,
+    "bag_text": "avon floral citrus fruity pink_grapefruit violet plum magnolia jasmine wild_orchid peach musk amber woody_notes",
+    "similarity": 0.13703435179318768
+  },
+  {
+    "id": 50,
+    "name_display": "Parfum CK One for Women and Men EDT 200 ml Product Non Segel",
+    "brand_display": "jennifer lopez",
+    "image_url": "https://images.tokopedia.net/img/cache/200-square/o3syd0/1997/1/1/d1278cd5499d412a8a1f9f64a7ede5a4~.jpeg.webp?ect=4g",
+    "buy_url": "https://www.tokopedia.com/gpi-lndonesia/parfum-ck-one-for-women-and-men-edt-200-ml-product-non-segel-1731424227441739753?extParam=whid%3D18962603%26src%3Dshop&aff_unique_id=&channel=others&chain_key=",
+    "price_num": 595000,
+    "rating_num": 4.9,
+    "bag_text": "jennifer_lopez woody powdery floral pink_pepper freesia peach_blossom clearwood cedar jasmine sandalwood suede oakmoss",
+    "similarity": 0.13437908958570463
+  },
+  {
+    "id": 298,
+    "name_display": "Parfum The One Intense for Men EDP 100 ml Product",
+    "brand_display": "jennifer lopez",
+    "image_url": "https://images.tokopedia.net/img/cache/200-square/aphluv/1997/1/1/8db44ea2e39643b3836dba3b7a56ffd0~.jpeg.webp?ect=4g",
+    "buy_url": "https://www.tokopedia.com/gpi-lndonesia/parfum-the-one-intense-for-men-edp-100-ml-product-1731424237420578793?extParam=src%3Dshop%26whid%3D18962603&aff_unique_id=&channel=others&chain_key=",
+    "price_num": 1250000,
+    "rating_num": 5,
+    "bag_text": "jennifer_lopez woody powdery floral pink_pepper freesia peach_blossom clearwood cedar jasmine sandalwood suede oakmoss",
+    "similarity": 0.13437908958570463
+  }
+]

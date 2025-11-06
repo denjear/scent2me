@@ -11,7 +11,7 @@ import scipy.sparse as sp
 import os
 import re
 import json
-
+from .auth import router as auth_router
 
 app = FastAPI(title="Scent2Me Recommendation API")
 
@@ -397,3 +397,10 @@ def clear_wishlist():
         return {"message": "Wishlist cleared"}
     except Exception as e:
         return {"error": f"Failed to clear wishlist: {e}"}
+    
+# Include auth router
+app.include_router(auth_router, prefix="/auth")
+
+@app.get("/")
+async def root():
+    return {"message": "API is running"}
