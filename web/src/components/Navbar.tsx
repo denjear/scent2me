@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, AlertCircle } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -9,12 +9,15 @@ export default function Navbar() {
   const router = useRouter();
   const [user, setUser] = useState<{ username?: string } | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showWishlistNotif, setShowWishlistNotif] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
       setUser(JSON.parse(userData));
+      // Reset notification when user logs in
+      setShowWishlistNotif(false);
     }
 
     // Click outside to close dropdown
@@ -30,9 +33,18 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
     setIsDropdownOpen(false);
     router.push('/onboarding');
+  };
+
+  const handleWishlistClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      e.preventDefault();
+      setShowWishlistNotif(true);
+    }
   };
 
   return (
@@ -72,7 +84,11 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <Link href="/wishlist" className="text-[#4B4B4B] font-semibold hover:opacity-75 transition-opacity">
+            <Link 
+              href="/wishlist" 
+              onClick={handleWishlistClick}
+              className="text-[#4B4B4B] font-semibold hover:opacity-75 transition-opacity"
+            >
               Wishlist
             </Link>
           </li>
@@ -114,6 +130,38 @@ export default function Navbar() {
           )}
         </div>
       </nav>
+
+      {/* Wishlist Login Notification */}
+      {showWishlistNotif && (
+        <div className="fixed top-20 left-1/2 bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 flex flex-col items-center text-center z-50 animate-slide-in-top">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#fff5f5] mb-3">
+            <AlertCircle size={24} className="text-[#d32f2f]" />
+          </div>
+          <h2 className="text-lg font-semibold text-[#4B4B4B] mb-2">
+            Login Required
+          </h2>
+          <p className="text-gray-600 text-sm mb-4">
+            To save and view your wishlist, please login with your account.
+          </p>
+          <div className="flex gap-2 w-full">
+            <button
+              onClick={() => setShowWishlistNotif(false)}
+              className="flex-1 px-3 py-2 text-sm bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition"
+            >
+              Continue as Guest
+            </button>
+            <button
+              onClick={() => {
+                setShowWishlistNotif(false);
+                router.push("/login");
+              }}
+              className="flex-1 px-3 py-2 text-sm bg-[#a6bfa3] text-white rounded-lg font-semibold hover:bg-[#93ad8f] transition"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

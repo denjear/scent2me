@@ -1,13 +1,51 @@
 from fastapi import FastAPI, APIRouter
 from pydantic import BaseModel
 from typing import List, Optional
+import os
+import json
 
 router = APIRouter()
 
-# Simpan user dalam memory (untuk testing)
-users = []
+# Persist users to artifacts/users.json so they survive restarts
+ROOT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
+ARTIFACTS_DIR = os.path.join(ROOT_DIR, "artifacts")
+USERS_PATH = os.path.join(ARTIFACTS_DIR, "users.json")
+
+# ensure artifacts dir exists
+os.makedirs(ARTIFACTS_DIR, exist_ok=True)
+
+# Simpan user dalam memory (untuk testing) - will be loaded from USERS_PATH
+users: List[dict] = []
 # Database in memory
 wishlist_db = {}
+
+
+def load_users():
+    global users
+    try:
+        if os.path.exists(USERS_PATH):
+            with open(USERS_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, list):
+                    users = data
+                else:
+                    users = []
+        else:
+            users = []
+    except Exception:
+        users = []
+
+
+def save_users():
+    try:
+        with open(USERS_PATH, "w", encoding="utf-8") as f:
+            json.dump(users, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print("Failed to save users:", e)
+
+
+# load existing users on import
+load_users()
 
 class UserRegister(BaseModel):
     email: str
@@ -48,6 +86,8 @@ async def register(user: UserRegister):
         return {"success": False, "message": "Email already registered"}
     
     users.append(user.dict())
+    # persist
+    save_users()
     return {"success": True, "message": "Registration successful"}
 
 @router.post("/login")

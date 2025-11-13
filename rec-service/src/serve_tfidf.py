@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, Body
+from fastapi import FastAPI, Query, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request
 from pydantic import BaseModel
@@ -347,8 +347,9 @@ WISHLIST_PATH = os.path.join(ART_DIR, "wishlist.json")
 
 # pastikan file wishlist ada
 if not os.path.exists(WISHLIST_PATH):
+    # create as a per-user mapping by default (avoids accidental global/shared list)
     with open(WISHLIST_PATH, "w") as f:
-        json.dump([], f)
+        json.dump({}, f)
 
 
 @app.get("/wishlist")
@@ -366,35 +367,101 @@ def get_wishlist():
 async def add_to_wishlist(request: Request):
     """Tambah satu atau beberapa parfum ke wishlist"""
     try:
-        new_items = await request.json()
-        if not isinstance(new_items, list):
-            new_items = [new_items]
+        payload = await request.json()
+
+        # payload can be:
+        # - a list of items (legacy)
+        # - a dict { email: 'user@email', items: [...] }
+        # - a single item dict
+        email = None
+        items = []
+        if isinstance(payload, dict) and "items" in payload:
+            email = payload.get("email")
+            items = payload.get("items") or []
+        elif isinstance(payload, list):
+            items = payload
+        elif isinstance(payload, dict):
+            # single item
+            items = [payload]
 
         with open(WISHLIST_PATH, "r") as f:
             wishlist = json.load(f)
 
-        # Hindari duplikasi berdasarkan name_display
-        existing_names = {item["name_display"] for item in wishlist if "name_display" in item}
-        for item in new_items:
-            if item.get("name_display") not in existing_names:
-                wishlist.append(item)
+        # If wishlist on disk is a mapping (per-user), store under the user's key
+        if isinstance(wishlist, dict):
+            # When storage is per-user mapping, require the client to provide an email
+            if not email:
+                # Do not silently write to a shared 'global' bucket when mapping exists
+                raise HTTPException(status_code=400, detail="Missing email in payload for per-user wishlist storage")
+
+            key = email
+            if key not in wishlist or not isinstance(wishlist[key], list):
+                wishlist[key] = []
+
+            existing_names = {item.get("name_display") for item in wishlist[key] if isinstance(item, dict) and "name_display" in item}
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                if item.get("name_display") not in existing_names:
+                    wishlist[key].append(item)
+
+        else:
+            # legacy: wishlist is a list
+            if not isinstance(wishlist, list):
+                wishlist = []
+            existing_names = {item.get("name_display") for item in wishlist if isinstance(item, dict) and "name_display" in item}
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                if item.get("name_display") not in existing_names:
+                    wishlist.append(item)
 
         with open(WISHLIST_PATH, "w") as f:
             json.dump(wishlist, f, indent=2)
 
-        return {"message": "Added to wishlist", "count": len(wishlist)}
+        # compute total count depending on structure
+        total = len(wishlist) if isinstance(wishlist, list) else sum(len(v) for v in wishlist.values())
+        return {"message": "Added to wishlist", "count": int(total)}
 
     except Exception as e:
         return {"error": f"Failed to add wishlist: {e}"}
 
 
 @app.post("/wishlist/clear")
-def clear_wishlist():
-    """Hapus semua isi wishlist"""
+async def clear_wishlist(request: Request):
+    """Hapus wishlist. If storage is a mapping, require { "email": "..." } in the body
+    and only clear that user's list. If storage is a legacy list, fully clear it.
+    """
     try:
+        # try to read optional payload
+        payload = {}
+        try:
+            payload = await request.json()
+        except Exception:
+            payload = {}
+
+        email = None
+        if isinstance(payload, dict):
+            email = payload.get("email")
+
+        with open(WISHLIST_PATH, "r") as f:
+            wishlist = json.load(f)
+
+        if isinstance(wishlist, dict):
+            # per-user mapping: require email to clear only that user's list
+            if not email:
+                raise HTTPException(status_code=400, detail="Missing email in request body for clearing user wishlist")
+            wishlist[email] = []
+        else:
+            # legacy list: clear whole file
+            wishlist = []
+
         with open(WISHLIST_PATH, "w") as f:
-            json.dump([], f)
+            json.dump(wishlist, f, indent=2)
+
         return {"message": "Wishlist cleared"}
+    except HTTPException:
+        raise
     except Exception as e:
         return {"error": f"Failed to clear wishlist: {e}"}
     

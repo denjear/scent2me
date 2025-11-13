@@ -31,8 +31,9 @@ export default function LoginPage() {
       const data = await res.json();
       
       if (data.success) {
-        // Store user data in localStorage
+        // Store user data and token in localStorage
         localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
         router.push('/homepage');
       } else {
         setError(data.message);
