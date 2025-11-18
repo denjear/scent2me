@@ -5,7 +5,7 @@ import { Search, Sparkles, ChevronDown } from "lucide-react";
 import toast from "react-hot-toast";
 import ProductCard from "../../../components/ProductCard";
 
-const API_BASE = process.env.NEXT_PUBLIC_REC_API_BASE || "http://localhost:8000";
+const API_BASE = "";
 
 type Perfume = {
   id?: string;

@@ -111,7 +111,7 @@ export default function RecommendationResultsPage() {
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       headers["Authorization"] = `Bearer ${token}`;
 
-      const res = await fetch("http://127.0.0.1:8000/wishlist/add", {
+      const res = await fetch("/wishlist/add", {
         method: "POST",
         headers,
         body: JSON.stringify(payload),

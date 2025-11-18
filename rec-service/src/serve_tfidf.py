@@ -37,7 +37,6 @@ matrix_path = os.path.join(ART_DIR, "X_tfidf.npz")
 
 print(f"🔹 Loading artifacts from {ART_DIR} ...")
 meta = pd.read_csv(meta_path)
-print("📊 meta columns:", meta.columns.tolist())
 tfidf = load(tfidf_path)
 X_tfidf = sp.load_npz(matrix_path)
 
