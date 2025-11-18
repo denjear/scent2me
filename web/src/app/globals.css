@@ -28,6 +28,34 @@ body {
 html {
   scroll-behavior: smooth;
 }
+/* Neumorphism utilities */
+.neu-soft {
+  background: #f5f1eb;
+  box-shadow:
+    8px 8px 20px #d6d2cc,
+    -8px -8px 20px #ffffff;
+}
+
+.neu-pressed {
+  background: #e9e4dc;
+  box-shadow:
+    inset 4px 4px 10px #d0ccc7,
+    inset -4px -4px 10px #ffffff;
+}
+
+.neu-input {
+  background: #fdfcfa;
+  box-shadow:
+    inset 3px 3px 8px #d8d5d0,
+    inset -3px -3px 8px #ffffff;
+}
+
+.neu-button {
+  background: #a7c3a1;
+  box-shadow:
+    6px 6px 14px #9bb696,
+    -6px -6px 14px #d5e4d0;
+}
 
 @keyframes slideInFromTop {
   from {
@@ -43,3 +71,97 @@ html {
 .animate-slide-in-top {
   animation: slideInFromTop 0.5s ease-out forwards;
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes pulse-on-hover {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.animate-fadeIn { animation: fadeIn 1s ease-in-out; }
+.animate-slideInLeft { animation: slideInLeft 1s ease-out; }
+.animate-pulse-on-hover:hover { animation: pulse-on-hover 0.6s ease-in-out; }
+
+/* Glassmorphism utilities */
+.glassmorphism {
+  background: rgba(249, 246, 241, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile menu slide-in animation */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* Enhanced neumorphism for navbar */
+.neu-navbar {
+  background: linear-gradient(135deg, #f9f6f1 0%, #f0ede6 100%);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Hover animations */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Active link indicator */
+.active-link {
+  position: relative;
+}
+
+.active-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, #a3b899, #93a78a);
+  border-radius: 1px;
+}
+
+/* Icon animations */
+.icon-bounce {
+  transition: transform 0.2s ease;
+}
+
+.icon-bounce:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Logo hover effect - subtle lift without boxy shadow */
+.logo-hover {
+  transition: transform 0.2s ease;
+}
+
+.logo-hover:hover {
+  transform: translateY(-1px);
+}
+
+    
