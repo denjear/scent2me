@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
+import { AlertCircle } from "lucide-react";
 
 type Product = {
   id?: string;
@@ -22,6 +23,7 @@ export default function RecommendationResultsPage() {
   const [results, setResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   useEffect(() => {
     try {
@@ -50,6 +52,14 @@ export default function RecommendationResultsPage() {
     }
   }, [router]);
 
+  // Close notification when user logs in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setShowLoginPrompt(false);
+    }
+  }, []);
+
   // ✅ Toggle individual selection
   const toggleSelect = (index: number) => {
     setSelected((prev) => {
@@ -71,21 +81,48 @@ export default function RecommendationResultsPage() {
 
   // ✅ Save selected perfumes only
   const handleSaveRecommendation = async () => {
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
     if (selected.size === 0) {
       alert("Please select at least one perfume to save!");
       return;
     }
 
     const selectedItems = results.filter((_, idx) => selected.has(idx));
+    // include user email if available so server can store per-user
+    let payload: any = selectedItems;
+    try {
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const user = JSON.parse(userStr as string);
+        if (user?.email) payload = { email: user.email, items: selectedItems };
+      }
+    } catch (e) {
+      console.error("Error reading user from localStorage", e);
+    }
 
     try {
+      // include Authorization header (Bearer token)
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      headers["Authorization"] = `Bearer ${token}`;
+
       const res = await fetch("http://127.0.0.1:8000/wishlist/add", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(selectedItems),
+        headers,
+        body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Failed to save wishlist");
+      const json = await res.json();
+      // backend may return { error: '...' } even with 200 status
+      if (!res.ok || json?.error) {
+        console.error("Backend error saving wishlist:", json);
+        throw new Error(json?.error || "Failed to save wishlist");
+      }
 
       alert("✅ Selected perfumes saved to wishlist!");
       router.push("/wishlist");
@@ -254,6 +291,35 @@ export default function RecommendationResultsPage() {
       <footer className="text-center py-8 text-gray-500 text-sm w-full">
         Scent2Me © 2025 All Rights Reserved.
       </footer>
+
+      {/* Floating Toast Notification (no background overlay) */}
+      {showLoginPrompt && (
+        <div className="fixed top-20 left-1/2 bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 flex flex-col items-center text-center z-50 animate-slide-in-top">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#fff5f5] mb-3">
+            <AlertCircle size={24} className="text-[#d32f2f]" />
+          </div>
+          <h2 className="text-lg font-semibold text-[#4B4B4B] mb-2">
+            Login Required
+          </h2>
+          <p className="text-gray-600 text-sm mb-4">
+            To save perfumes to your wishlist, please login with your account.
+          </p>
+          <div className="flex gap-2 w-full">
+            <button
+              onClick={() => setShowLoginPrompt(false)}
+              className="flex-1 px-3 py-2 text-sm bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition"
+            >
+              Close
+            </button>
+            <button
+              onClick={() => router.push("/login")}
+              className="flex-1 px-3 py-2 text-sm bg-[#a6bfa3] text-white rounded-lg font-semibold hover:bg-[#93ad8f] transition"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

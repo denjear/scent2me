@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { AlertTriangle } from "lucide-react";
 
 const API_BASE = process.env.NEXT_PUBLIC_REC_API_BASE || "http://localhost:8000";
 
@@ -35,6 +36,9 @@ export default function RecommendationsPage() {
   const [budget, setBudget] = useState({ lowest: "", highest: "" });
   const [loading, setLoading] = useState(false);
 
+  // new state: show disclaimer modal
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+
   // utils
   const tok = (s: string) => s.toLowerCase().trim().replace(/\s+/g, " ");
   const splitNotes = (s: string) =>
@@ -59,7 +63,8 @@ export default function RecommendationsPage() {
     return null;
   };
 
-  const handleSubmit = async () => {
+  // actual submit logic extracted so modal can confirm first
+  const doSubmit = async () => {
     const msg = validate();
     if (msg) {
       toast.error(msg);
@@ -100,6 +105,18 @@ export default function RecommendationsPage() {
       setLoading(false);
     }
   };
+
+  // opens disclaimer modal before proceeding
+  const openDisclaimer = () => {
+    // run validation first; if invalid show toast and do NOT open disclaimer
+    const msg = validate();
+    if (msg) {
+      toast.error(msg);
+      return;
+    }
+    setShowDisclaimer(true);
+  };
+  const closeDisclaimer = () => setShowDisclaimer(false);
 
   const clearAll = () => {
     setForm({ gender: "", families: [], timeOfDay: "", occasion: "", performance: "Moderate", notes: "" });
@@ -250,7 +267,7 @@ export default function RecommendationsPage() {
         {/* Actions */}
         <div className="flex items-center justify-center gap-4 mt-10">
           <button
-            onClick={handleSubmit}
+            onClick={openDisclaimer} /* show modal first */
             disabled={loading}
             className="px-6 py-3 bg-[#a8bfa5] text-white rounded-xl hover:bg-[#90a88d] transition disabled:opacity-60"
           >
@@ -267,6 +284,64 @@ export default function RecommendationsPage() {
 
         <footer className="text-center mt-12 text-sm text-gray-500">Scent2Me © 2025 All Rights Reserved.</footer>
       </section>
+
+      {/* Disclaimer Modal */}
+      {showDisclaimer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          {/* overlay */}
+          <div
+            className="absolute inset-0 bg-black/40 transition-opacity"
+            onClick={closeDisclaimer}
+          />
+          <div className="relative bg-white rounded-2xl w-full max-w-xl mx-auto p-6 shadow-lg z-10">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="rounded-full bg-[#f3eadf] p-3">
+                  {/* triangle alert icon from lucide-react */}
+                  <AlertTriangle size={28} className="text-[#9DBE9C]" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-800">Disclaimer — Please read</h3>
+                <p className="mt-2 text-sm text-gray-600">
+                  These perfume recommendations are generated based on similarity analysis and may not fully represent the actual scent experience.
+                  Fragrance perception varies between individuals, so please make sure you understand your own scent preferences and the characteristics of each perfume before making a decision.
+                </p>
+                <p className="mt-3 text-sm text-gray-500">
+                  By clicking "I Agree" you acknowledge this and allow the system to proceed with generating recommendations.
+                </p>
+
+                <div className="mt-5 flex justify-end gap-3">
+                  <button
+                    onClick={() => { closeDisclaimer(); }}
+                    className="px-4 py-2 rounded-md bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={async () => {
+                      closeDisclaimer();
+                      await doSubmit();
+                    }}
+                    className="px-4 py-2 rounded-md bg-[#9DBE9C] text-white font-medium hover:bg-[#8caf8c] transition"
+                  >
+                    I Agree
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* close icon */}
+            <button
+              aria-label="Close"
+              onClick={closeDisclaimer}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

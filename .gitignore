@@ -53,6 +53,10 @@ rec-service/**/*.pyd
 *.sqlite
 *.sqlite3
 
+# persisted dev-only user info/credentials
+rec-service/artifacts/users.json
+rec-service/artifacts/wishlist.json
+
 # ============================
 # ⚙️ SYSTEM / EDITOR
 # ============================

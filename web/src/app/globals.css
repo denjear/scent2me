@@ -28,3 +28,18 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%) translateX(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(-50%);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-top {
+  animation: slideInFromTop 0.5s ease-out forwards;
+}
