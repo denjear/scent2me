@@ -55,19 +55,12 @@ cd web
 npm install
 npm run dev
 # buka http://localhost:3000
-2️⃣ Backend (FastAPI)
-bash
-Copy code
+### 2️⃣ Backend (FastAPI)
 cd rec-service
 pip install -r requirements.txt
-uvicorn src.serve:app --reload --port 8000
-# cek http://localhost:8000/health
-3️⃣ Docker Compose (opsional)
-bash
-Copy code
-docker-compose up --build
-# web di http://localhost:3000
-# backend di http://localhost:8000
+uvicorn src.serve_tfidf:app --reload --port 8000
+# cek http://localhost:8000/
+
 💡 Fitur Utama
 - Login & Onboarding Form
 - Homepage dengan kategori aroma
