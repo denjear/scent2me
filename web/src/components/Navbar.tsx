@@ -234,7 +234,7 @@ export default function Navbar() {
           <div className="flex gap-2 w-full">
             <button
               onClick={() => setShowWishlistNotif(false)}
-              className="flex-1 px-3 py-2 text-sm bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition"
+              className="cursor-pointer flex-1 px-3 py-2 text-sm bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition"
             >
               Continue as Guest
             </button>
@@ -243,7 +243,7 @@ export default function Navbar() {
                 setShowWishlistNotif(false);
                 router.push("/login");
               }}
-              className="flex-1 px-3 py-2 text-sm bg-[#a6bfa3] text-white rounded-lg font-semibold hover:bg-[#93ad8f] transition"
+              className="cursor-pointer flex-1 px-3 py-2 text-sm bg-[#a6bfa3] text-white rounded-lg font-semibold hover:bg-[#93ad8f] transition"
             >
               Login
             </button>
