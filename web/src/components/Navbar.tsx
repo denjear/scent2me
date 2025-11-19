@@ -46,8 +46,8 @@ export default function Navbar() {
   };
 
   const handleWishlistClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    const user = localStorage.getItem('user');
+    if (!user) {
       e.preventDefault();
       setShowWishlistNotif(true);
     }
