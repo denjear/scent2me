@@ -125,7 +125,7 @@ export default function Navbar() {
                 <div className="absolute right-0 mt-2 w-48 glassmorphism rounded-lg shadow-xl py-2 border border-white/20 animate-slide-in-right">
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-4 py-3 text-[#4B4B4B] hover:bg-[#f0ede6] transition-colors duration-300 rounded-lg mx-2"
+                    className="cursor-pointer w-full flex items-center gap-2 px-4 py-3 text-[#4B4B4B] hover:bg-[#f0ede6] transition-colors duration-300 rounded-lg mx-2"
                   >
                     <LogOut size={18} className="icon-bounce" />
                     <span>Logout</span>
