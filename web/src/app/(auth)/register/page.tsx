@@ -4,8 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Eye, EyeOff, CircleAlert, X } from 'lucide-react';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { apiUrl, API_BASE } from '@/lib/api';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -47,13 +46,11 @@ export default function RegisterPage() {
     try {
       setIsSubmitting(true);
 
-      const res = await fetch(`${API_BASE}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+     const res = await fetch(apiUrl('auth/register'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
 
       const contentType = res.headers.get('content-type') || '';
       let data: any = null;

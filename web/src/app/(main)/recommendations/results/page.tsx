@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { apiUrl, API_BASE } from '@/lib/api';
 
 type Product = {
   id?: string;
@@ -160,7 +159,7 @@ const handleSaveWishlist = async () => {
   console.log(">>> Payload dikirim ke /auth/wishlist/add:", payload);
 
   try {
-    const res = await fetch(`${API_BASE}/auth/wishlist/add`, {
+    const res = await fetch(apiUrl('/auth/wishlist/add'), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

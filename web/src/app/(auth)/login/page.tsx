@@ -4,8 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Eye, EyeOff, CircleAlert, X } from 'lucide-react';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { apiUrl, API_BASE } from '@/lib/api';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,10 +41,13 @@ export default function LoginPage() {
       return;
     }
 
-    try {
+      try {
       setIsSubmitting(true);
 
-      const res = await fetch(`${API_BASE}/auth/login`, {
+      const url = apiUrl('auth/login');
+      console.log('Login URL:', url); // buat verifikasi di Network
+
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

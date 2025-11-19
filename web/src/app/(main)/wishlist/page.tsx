@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { AlertCircle } from "lucide-react";
+import { apiUrl, API_BASE } from '@/lib/api';
 
 type Product = {
   id?: string;
@@ -15,10 +16,6 @@ type Product = {
   tags?: string;
   buy_url?: string;
 };
-
-// base URL backend (Railway / local)
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState<Product[]>([]);

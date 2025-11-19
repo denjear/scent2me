@@ -4,8 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Search, Sparkles, ChevronDown } from "lucide-react";
 import toast from "react-hot-toast";
 import ProductCard from "../../../components/ProductCard";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { apiUrl, API_BASE } from '@/lib/api';
 
 type Perfume = {
   id?: string;
@@ -111,7 +110,7 @@ export default function ExplorePage() {
   const handleSurpriseMe = async () => {
     setLoadingRandom(true);
     try {
-      const res = await fetch(`${API_BASE}/random`);
+      const res = await fetch(apiUrl('random'));
       const json = await res.json();
       if (!res.ok || json.error) throw new Error(json.error || `HTTP ${res.status}`);
       const results = json.results || [];
