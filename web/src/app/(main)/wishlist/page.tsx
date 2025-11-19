@@ -51,7 +51,7 @@ export default function WishlistPage() {
     const fetchWishlist = async () => {
       try {
         const res = await fetch(
-          `${API_BASE}/auth/wishlist?email=${encodeURIComponent(email as string)}`
+          apiUrl(`auth/wishlist?email=${encodeURIComponent(email as string)}`)
         );
 
         if (!res.ok) {
@@ -107,7 +107,7 @@ export default function WishlistPage() {
     if (!email) return;
 
     try {
-      await fetch(`${API_BASE}/auth/wishlist/clear`, {
+      await fetch(apiUrl('auth/wishlist/clear'), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

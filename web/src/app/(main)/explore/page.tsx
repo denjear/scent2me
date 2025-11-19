@@ -33,7 +33,7 @@ export default function ExplorePage() {
   useEffect(() => {
     const loadBrands = async () => {
       try {
-        const res = await fetch(`${API_BASE}/brands`);
+        const res = await fetch(apiUrl('brands'));
         const json = await res.json();
         if (!res.ok || json.error) throw new Error(json.error || `HTTP ${res.status}`);
         setBrands(json.brands || []);
@@ -71,7 +71,7 @@ export default function ExplorePage() {
         if (query.trim()) params.set("name", query.trim());
         if (brand) params.set("brand", brand);
 
-        const res = await fetch(`${API_BASE}/search?${params}`);
+        const res = await fetch(apiUrl(`search?${params}`));
         const json = await res.json();
         if (!res.ok || json.error) throw new Error(json.error || `HTTP ${res.status}`);
 
@@ -94,7 +94,7 @@ export default function ExplorePage() {
   useEffect(() => {
     const loadTrending = async () => {
       try {
-        const res = await fetch(`${API_BASE}/trending`);
+        const res = await fetch(apiUrl('trending'));
         const json = await res.json();
         if (!res.ok || json.error) throw new Error(json.error || `HTTP ${res.status}`);
         setTrending(json.results || []);
