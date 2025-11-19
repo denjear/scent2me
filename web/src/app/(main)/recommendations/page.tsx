@@ -348,10 +348,12 @@ export default function RecommendationsPage() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto py-8 px-6 bg-white/50 backdrop-blur-sm border-t border-white/20">
-        <div className="container mx-auto text-center">
-          <p className="text-sm text-gray-600">Scent2Me © 2025 All Rights Reserved.</p>
-        </div>
+      <footer className="w-full mt-auto pt-8 pb-8">
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-xs text-[#8B8B8B] text-center">
+              © 2025 Scent2Me. All rights reserved.
+            </p>
+          </div>
       </footer>
 
       {/* Disclaimer Modal */}

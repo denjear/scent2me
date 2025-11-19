@@ -146,10 +146,10 @@ export default function ExplorePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-[#f8f6ef] via-[#f0ede6] to-[#e9e4dc] py-20">
         <div className="absolute inset-0 bg-[url('/images/parfum_bg_pattern.png')] opacity-5 bg-repeat bg-center"></div>
         <div className="relative container mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm w-fit mx-auto mb-6">
+          {/* <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm w-fit mx-auto mb-6">
             <Compass size={16} className="text-[#A3B899]" />
             <span className="text-sm font-medium text-[#4B4B4B]">Explore Collection</span>
-          </div>
+          </div> */}
           <h1 className="text-5xl md:text-6xl font-serif font-light mb-6 bg-gradient-to-r from-[#2D2D2D] via-[#4B4B4B] to-[#2D2D2D] bg-clip-text text-transparent tracking-tight">
             Discover Your Next Scent
           </h1>
@@ -236,8 +236,8 @@ export default function ExplorePage() {
               </div>
             </div>
 
-            {/* Surprise Me Button */}
-            <div className="text-center mb-8">
+            {/* Surprise Me & Submit Search Buttons */}
+            <div className="text-center mb-8 flex flex-col sm:flex-row items-center gap-4 justify-center">
               <button
                 onClick={handleSurpriseMe}
                 disabled={loadingRandom}
@@ -246,22 +246,38 @@ export default function ExplorePage() {
                 <Sparkles size={20} />
                 {loadingRandom ? "Finding your surprise..." : "Surprise Me!"}
               </button>
-              {randomPerfume && (
-                <div className="mt-8 max-w-sm mx-auto">
-                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/30">
-                    <ProductCard
-                      key={randomPerfume.id || randomPerfume.name_display}
-                      imageUrl={randomPerfume.image_url}
-                      name={randomPerfume.name_display}
-                      brand={randomPerfume.brand_display}
-                      price={formatPrice(randomPerfume.price_num)}
-                      buy_url={randomPerfume.buy_url}
-                      rating_num={randomPerfume.rating_num}
-                    />
-                  </div>
-                </div>
-              )}
+
+              <button
+                onClick={() => handleSearch()}
+                disabled={!searchQuery.trim() && !selectedBrand}
+                aria-disabled={!searchQuery.trim() && !selectedBrand}
+                className={
+                  (!searchQuery.trim() && !selectedBrand)
+                    ? "inline-flex items-center gap-2 px-6 py-3 bg-gray-100 border border-gray-200 text-gray-500 font-medium rounded-2xl transition-all duration-300 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    : "inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-2xl transition-all duration-300 shadow-sm hover:shadow-2xl hover:scale-105 active:scale-95 cursor-pointer"
+                }
+              >
+                <Search size={18} />
+                <span>Submit Search</span>
+              </button>
             </div>
+
+            {/* Random Perfume Result */}
+            {randomPerfume && (
+              <div className="mt-8 max-w-sm mx-auto">
+                <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/30">
+                  <ProductCard
+                    key={randomPerfume.id || randomPerfume.name_display}
+                    imageUrl={randomPerfume.image_url}
+                    name={randomPerfume.name_display}
+                    brand={randomPerfume.brand_display}
+                    price={formatPrice(randomPerfume.price_num)}
+                    buy_url={randomPerfume.buy_url}
+                    rating_num={randomPerfume.rating_num}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -339,10 +355,12 @@ export default function ExplorePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 bg-white/50 backdrop-blur-sm border-t border-white/20">
-        <div className="container mx-auto text-center">
-          <p className="text-sm text-gray-600">Scent2Me © 2025 All Rights Reserved.</p>
-        </div>
+      <footer className="w-full mt-auto pt-8 pb-8">
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-xs text-[#8B8B8B] text-center">
+              © 2025 Scent2Me. All rights reserved.
+            </p>
+          </div>
       </footer>
     </main>
   );

@@ -45,7 +45,7 @@ export default function Homepage() {
             </h1>
 
             <p className="
-              text-base sm:text-lg md:text-xl lg:text-2xl
+              text-sm sm:text-base md:text-lg lg:text-xl
               text-[#5A5A5A]
               font-light leading-relaxed
               max-w-xl
@@ -72,6 +72,7 @@ export default function Homepage() {
                   backdrop-blur-sm
                   flex items-center gap-3
                   border border-white/20
+                  cursor-pointer
                 ">
                   Get Started
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -89,6 +90,7 @@ export default function Homepage() {
                   shadow-md hover:shadow-lg
                   hover:scale-105 active:scale-95
                   border border-white/30
+                  cursor-pointer
                 ">
                   Explore
                 </button>
