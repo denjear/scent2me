@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Sparkles, Trash2 } from "lucide-react";
 import { apiUrl, API_BASE } from '@/lib/api';
 
 const FAMILIES = ["Floral", "Woody", "Citrus", "Oriental", "Gourmand", "Aromatic", "Fresh", "Spicy", "Aquatic"];
@@ -331,15 +331,19 @@ export default function RecommendationsPage() {
                       Finding your scent...
                     </>
                   ) : (
-                    "Get Recommendation"
+                    <>
+                      <Sparkles size={18} className="text-white" />
+                      <span>Get Recommendation</span>
+                    </>
                   )}
                 </button>
                 <button
                   onClick={clearAll}
                   type="button"
-                  className="neu-button-secondary hover-lift px-8 py-4 text-[#4B4B4B] font-bold rounded-2xl transition-all duration-300 flex items-center gap-2 cursor-pointer"
+                  className="neu-button-secondary hover-lift px-8 py-4 bg-red-500 hover:bg-red-600 text-white font-bold rounded-2xl transition-all duration-300 flex items-center gap-2 cursor-pointer"
                 >
-                  Clear All
+                  <Trash2 size={18} className="text-white" />
+                  <span>Clear All</span>
                 </button>
               </div>
             </div>

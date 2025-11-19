@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Save, Sliders } from "lucide-react";
 import toast from "react-hot-toast";
 import { apiUrl, API_BASE } from '@/lib/api';
 
@@ -222,23 +222,23 @@ const handleSaveWishlist = async () => {
   }
 
   return (
-    <div className="bg-[#f8f6ef] min-h-screen flex flex-col items-center">
-      <div className="w-full max-w-6xl mx-auto px-6 py-12">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-semibold text-[#4B4B4B]">
-            Recommendations for You
-          </h1>
-          <p className="mt-2 text-md text-gray-500">
-            Based on your preferences, here are your personalized scents
-          </p>
-        </div>
-
+      <div className="bg-[#f8f6ef] min-h-screen flex flex-col items-center">
+        <div className="w-full max-w-6xl mx-auto px-6 py-12">
+          {/* Header */}
+          <div className="text-center mb-10">
+            <h1 className="text-3xl md:text-4xl font-serif font-light mb-4 bg-gradient-to-r from-[#2D2D2D] via-[#4B4B4B] to-[#2D2D2D] bg-clip-text text-transparent">
+              Recommendations for You
+            </h1>
+            <p className="text-lg md:text-xl text-[#5A5A5A] max-w-3xl mx-auto leading-relaxed font-light">
+              Based on your preferences, here are your personalized scents
+            </p>
+          </div>
+        
         {/* Controls */}
 <div className="flex justify-end mb-6">
   <button
     onClick={toggleSelectAll}
-    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm border
+    className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm border
       ${
         selected.size === results.length
           ? "bg-[#E9F5E7] text-[#5F8160] border-[#A5C5A2] hover:bg-[#DBEDDA]"
@@ -330,26 +330,37 @@ const handleSaveWishlist = async () => {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 justify-center">
-          {/* Save to Wishlist */}
+        <div className="flex items-center gap-4 justify-center">
+          {/* Save to Wishlist (enhanced) */}
           <button
             onClick={handleSaveWishlist}
             disabled={selected.size === 0}
-            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+            className={`cursor-pointer inline-flex items-center gap-3 px-5 py-3 rounded-2xl font-semibold transition-all shadow-sm ${
               selected.size > 0
-                ? "bg-[#A3B899] text-white hover:bg-[#93a78a]"
+                ? "bg-[#A3B899] text-white hover:bg-[#93a78a] hover:shadow-md transform hover:-translate-y-0.5"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            Save Recommendation ({selected.size})
+            <span
+              className={`inline-flex items-center justify-center w-9 h-9 rounded-lg ${
+                selected.size > 0 ? "bg-white/20" : "bg-gray-200"
+              }`}
+            >
+              <Save size={16} className={`${selected.size > 0 ? "text-white" : "text-gray-400"}`} />
+            </span>
+            <span>Save Recommendation</span>
+            <span className="text-sm opacity-90">({selected.size})</span>
           </button>
 
-          {/* Refine Preferences */}
+          {/* Refine Preferences (enhanced) */}
           <button
-            className="px-6 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 hover:bg-gray-100 transition"
+            className="cursor-pointer inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white border border-gray-300 text-gray-800 hover:shadow-md transition"
             onClick={() => router.push("/recommendations")}
           >
-            Refine Preferences
+            <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#F1F7F1]">
+              <Sliders size={16} className="text-[#6F8F6F]" />
+            </span>
+            <span className="font-semibold">Refine Preferences</span>
           </button>
         </div>
       </div>

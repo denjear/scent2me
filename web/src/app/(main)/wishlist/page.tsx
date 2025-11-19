@@ -244,11 +244,11 @@ export default function WishlistPage() {
 
       <div className="flex-grow relative z-10">
         <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm w-fit mx-auto mb-6">
+          <div className="text-center mb-8">
+            {/* <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm w-fit mx-auto mb-6">
               <Heart size={16} className="text-[#A3B899]" />
               <span className="text-sm font-medium text-[#4B4B4B]">Your Wishlist</span>
-            </div>
+            </div> */}
             <h1 className="text-3xl md:text-4xl font-serif font-light mb-6 bg-gradient-to-r from-[#2D2D2D] via-[#4B4B4B] to-[#2D2D2D] bg-clip-text text-transparent">
               Fragrances Collection
             </h1>
@@ -322,9 +322,10 @@ export default function WishlistPage() {
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="px-4 py-2 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Previous page"
+                    className="cursor-pointer px-4 py-2 bg-white backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-25 disabled:cursor-not-allowed"
                   >
-                    Previous
+                    <span className="text-xl font-semibold text-black select-none">{'<'}</span>
                   </button>
 
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm">
@@ -336,17 +337,18 @@ export default function WishlistPage() {
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className="px-4 py-2 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Next page"
+                    className="cursor-pointer px-4 py-2 bg-white backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-25 disabled:cursor-not-allowed"
                   >
-                    Next
+                    <span className="text-xl font-semibold text-black select-none">{'>'}</span>
                   </button>
                 </div>
               )}
 
-              <div className="flex justify-center mb-12">
+              <div className="flex justify-center ">
                 <button
                   onClick={clearWishlist}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-red-400 to-red-500 text-white font-semibold rounded-2xl hover:from-red-500 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                  className="cursor-pointer inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-red-400 to-red-500 text-white font-semibold rounded-2xl hover:from-red-500 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
                 >
                   <Trash2 size={20} />
                   Clear Wishlist
