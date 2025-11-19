@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { AlertCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -186,11 +187,15 @@ const handleSaveWishlist = async () => {
       return;
     }
 
-    alert("✅ Selected perfumes saved to wishlist!");
-    router.push("/wishlist");
+    // ✅ success toast (react-hot-toast style)
+    toast.success("Selected perfumes were successfully saved!");
+
+    setTimeout(() => {
+      router.push("/wishlist");
+    }, 800);
   } catch (err) {
     console.error("Error saving wishlist:", err);
-    alert("❌ Failed to save wishlist.");
+    toast.error("Failed to save wishlist. Please try again.");
   }
 };
 
