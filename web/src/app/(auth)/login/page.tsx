@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Eye, EyeOff, CircleAlert, X } from 'lucide-react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, "") ?? "";;
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function LoginPage() {
   const router = useRouter();

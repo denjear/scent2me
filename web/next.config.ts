@@ -12,26 +12,5 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "**" }, // beberapa CDN masih http
     ],
     dangerouslyAllowSVG: true,
-  },
-
-  async rewrites() {
-    return [
-      {
-        // semua /auth/... di frontend → dialihkan ke backend /auth/...
-        source: "/auth/:path*",
-        destination: `${BACKEND_URL}/auth/:path*`,
-      },
-      {
-        // kalau endpoint rekomendasi kamu misalnya /recommend
-        source: "/recommend/:path*",
-        destination: `${BACKEND_URL}/recommend/:path*`,
-      },
-      {
-        source: "/wishlist/:path*",
-        destination: `${BACKEND_URL}/wishlist/:path*`,
-      },
-    ];
-  },
-};
-
-export default nextConfig;
+  }
+}
