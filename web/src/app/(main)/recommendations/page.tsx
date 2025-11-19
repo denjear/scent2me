@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { AlertTriangle } from "lucide-react";
 
-const API_BASE = "";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const FAMILIES = ["Floral", "Woody", "Citrus", "Oriental", "Gourmand", "Aromatic", "Fresh", "Spicy", "Aquatic"];
 const TIMES = ["Morning", "Afternoon", "Evening", "Night"];

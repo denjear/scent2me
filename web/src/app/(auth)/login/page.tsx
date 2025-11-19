@@ -1,50 +1,85 @@
 'use client';
+
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react'
-import { Eye, EyeOff, CircleAlert, X } from 'lucide-react'
+import { useState } from 'react';
+import { Eye, EyeOff, CircleAlert, X } from 'lucide-react';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function LoginPage() {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false)
-  
-  // Add form state
+
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Add login handler
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const clearError = () => setError('');
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setError('');
+
+    if (!API_BASE) {
+      setError('Client misconfigured: NEXT_PUBLIC_API_BASE_URL is not set.');
+      return;
+    }
+
+    if (!formData.email || !formData.password) {
+      setError('Email and password are required.');
+      return;
+    }
+
     try {
-      const res = await fetch('/auth/login', {
+      setIsSubmitting(true);
+
+      const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-      
-      const data = await res.json();
-      
-      if (data.success) {
-        // Store user data and token in localStorage
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
-        router.push('/homepage');
+
+      const contentType = res.headers.get('content-type') || '';
+      let data: any = null;
+
+      if (contentType.includes('application/json')) {
+        data = await res.json();
       } else {
-        setError(data.message);
+        const text = await res.text();
+        console.error('Non-JSON response from backend:', text);
+        throw new Error('Invalid response from server');
       }
+
+      if (!res.ok || !data?.success) {
+        setError(data?.message || 'Login failed.');
+        return;
+      }
+
+      // backend sekarang hanya mengirim user, tanpa token
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      router.push('/homepage');
     } catch (err) {
+      console.error('Login error:', err);
       setError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  // Add clear error function
-  const clearError = () => setError('');
 
   return (
     <div className="min-h-screen w-full flex bg-[#f8f2eb]"> 

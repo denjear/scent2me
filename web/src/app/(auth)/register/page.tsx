@@ -1,46 +1,85 @@
 'use client';
+
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react'
-import { Eye, EyeOff, CircleAlert, X } from 'lucide-react' // tambahkan import X
+import { useState } from 'react';
+import { Eye, EyeOff, CircleAlert, X } from 'lucide-react';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
   });
-  const [error, setError] = useState('');
 
-  // Tambahkan fungsi handle submit
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const clearError = () => setError('');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setError('');
+
+    if (!API_BASE) {
+      setError('Client misconfigured: NEXT_PUBLIC_API_BASE_URL is not set.');
+      return;
+    }
+
+    if (!formData.username || !formData.email || !formData.password) {
+      setError('Username, email, and password are required.');
+      return;
+    }
+
     try {
-      const res = await fetch('/auth/register', {
+      setIsSubmitting(true);
+
+      const res = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-      
-      const data = await res.json();
-      
-      if (data.success) {
-        router.push('/login'); // Redirect ke login setelah register berhasil
+
+      const contentType = res.headers.get('content-type') || '';
+      let data: any = null;
+
+      if (contentType.includes('application/json')) {
+        data = await res.json();
       } else {
-        setError(data.message);
+        const text = await res.text();
+        console.error('Non-JSON response from backend:', text);
+        throw new Error('Invalid response from server');
       }
+
+      if (!res.ok || !data?.success) {
+        setError(data?.message || 'Registration failed.');
+        return;
+      }
+
+      // Registrasi sukses → arahkan ke login
+      router.push('/login');
     } catch (err) {
+      console.error('Register error:', err);
       setError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  // Tambahkan fungsi untuk menutup error message
-  const clearError = () => setError('');
 
   return (
     <div className="min-h-screen w-full flex bg-[#f8f2eb]"> 

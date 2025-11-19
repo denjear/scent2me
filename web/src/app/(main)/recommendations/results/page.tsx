@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { AlertCircle } from "lucide-react";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Product = {
   id?: string;
   image_url?: string;
@@ -71,66 +73,127 @@ export default function RecommendationResultsPage() {
   };
 
   // ✅ Select all or clear all
-  const toggleSelectAll = () => {
-    if (selected.size === results.length) {
-      setSelected(new Set());
-    } else {
-      setSelected(new Set(results.map((_, idx) => idx)));
-    }
+const toggleSelectAll = () => {
+  if (selected.size === results.length) {
+    setSelected(new Set());
+  } else {
+    setSelected(new Set(results.map((_, idx) => idx)));
+  }
+};
+
+// ✅ Save selected perfumes only
+const handleSaveWishlist = async () => {
+  // 1. Cek user dari localStorage
+  const userStr =
+    typeof window !== "undefined" ? localStorage.getItem("user") : null;
+
+  if (!userStr) {
+    setShowLoginPrompt(true);
+    return;
+  }
+
+  let user: { email?: string } | null = null;
+  try {
+    user = JSON.parse(userStr);
+  } catch (e) {
+    console.error("Failed to parse user from localStorage", e);
+    setShowLoginPrompt(true);
+    return;
+  }
+
+  if (!user?.email) {
+    console.error("User email not found in localStorage", user);
+    setShowLoginPrompt(true);
+    return;
+  }
+
+  // 2. Ambil hanya item yang ter-select
+  const selectedProducts = results
+    .map((item, idx) => ({ item, idx }))
+    .filter(({ idx }) => selected.has(idx))
+    .map(({ item }) => ({
+      // ✅ paksa string di field yang didefinisikan string di backend
+      id:
+        item.id !== undefined && item.id !== null
+          ? String(item.id)
+          : undefined,
+
+      image_url:
+        item.image_url !== undefined && item.image_url !== null
+          ? String(item.image_url)
+          : undefined,
+
+      name_display: String(item.name_display || "Unknown Perfume"),
+
+      brand_display: String(item.brand_display || "Unknown Brand"),
+
+      // number only
+      price_num:
+        typeof item.price_num === "number" ? item.price_num : undefined,
+
+      rating_num:
+        typeof item.rating_num === "number" ? item.rating_num : undefined,
+
+      // tags sudah string di tipe kamu → aman, tapi tetep dibungkus
+      tags:
+        item.tags !== undefined && item.tags !== null
+          ? String(item.tags)
+          : undefined,
+
+      buy_url:
+        item.buy_url !== undefined && item.buy_url !== null
+          ? String(item.buy_url)
+          : undefined,
+    }));
+
+  if (selectedProducts.length === 0) {
+    alert("Silakan pilih minimal 1 parfum dulu 👍");
+    return;
+  }
+
+  const payload = {
+    email: user.email,
+    products: selectedProducts,
   };
 
-  // ✅ Save selected perfumes only
-  const handleSaveRecommendation = async () => {
-    // Check if user is logged in
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setShowLoginPrompt(true);
-      return;
-    }
+  console.log(">>> Payload dikirim ke /auth/wishlist/add:", payload);
 
-    if (selected.size === 0) {
-      alert("Please select at least one perfume to save!");
-      return;
-    }
+  try {
+    const res = await fetch(`${API_BASE}/auth/wishlist/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
-    const selectedItems = results.filter((_, idx) => selected.has(idx));
-    // include user email if available so server can store per-user
-    let payload: any = selectedItems;
+    let json: any = null;
     try {
-      const userStr = localStorage.getItem("user");
-      if (userStr) {
-        const user = JSON.parse(userStr as string);
-        if (user?.email) payload = { email: user.email, items: selectedItems };
-      }
+      json = await res.json();
     } catch (e) {
-      console.error("Error reading user from localStorage", e);
+      console.error("Gagal parse JSON response:", e);
     }
 
-    try {
-      // include Authorization header (Bearer token)
-      const headers: Record<string, string> = { "Content-Type": "application/json" };
-      headers["Authorization"] = `Bearer ${token}`;
+    console.log(">>> Response /auth/wishlist/add:", res.status, json);
 
-      const res = await fetch("/wishlist/add", {
-        method: "POST",
-        headers,
-        body: JSON.stringify(payload),
-      });
-
-      const json = await res.json();
-      // backend may return { error: '...' } even with 200 status
-      if (!res.ok || json?.error) {
-        console.error("Backend error saving wishlist:", json);
-        throw new Error(json?.error || "Failed to save wishlist");
-      }
-
-      alert("✅ Selected perfumes saved to wishlist!");
-      router.push("/wishlist");
-    } catch (err) {
-      console.error("Error saving wishlist:", err);
-      alert("❌ Failed to save wishlist.");
+    if (!res.ok || json?.success === false) {
+      console.error("Backend error saving wishlist:", json);
+      alert(
+        `❌ Failed to save wishlist.\nStatus: ${res.status}\nMessage: ${
+          json?.message || JSON.stringify(json?.detail || "Unknown error")
+        }`
+      );
+      return;
     }
-  };
+
+    alert("✅ Selected perfumes saved to wishlist!");
+    router.push("/wishlist");
+  } catch (err) {
+    console.error("Error saving wishlist:", err);
+    alert("❌ Failed to save wishlist.");
+  }
+};
+
 
   if (loading) {
     return (
@@ -266,7 +329,7 @@ export default function RecommendationResultsPage() {
         <div className="flex items-center gap-3 justify-center">
           {/* Save to Wishlist */}
           <button
-            onClick={handleSaveRecommendation}
+            onClick={handleSaveWishlist}
             disabled={selected.size === 0}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
               selected.size > 0
