@@ -17,7 +17,7 @@ export default function Homepage() {
       <div className="absolute bottom-32 right-16 w-32 h-32 bg-[#9DBE9C]/10 rounded-full blur-xl animate-pulse delay-1000"></div>
       <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-[#B8D4B0]/15 rounded-full blur-lg animate-pulse delay-500"></div>
 
-      <div className="relative z-10 flex flex-col justify-start items-center pt-12 pb-4 px-4 sm:px-8 md:px-16 lg:px-20 xl:px-28 h-full">
+      <div className="relative z-10 flex flex-col justify-start items-center pt-8 pb-4 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 h-full min-h-screen">
 
         {/* Hero Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl gap-12 lg:gap-8">
@@ -32,7 +32,7 @@ export default function Homepage() {
             </div>
 
             <h1 className="
-              text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl
+              text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl
               font-serif font-light leading-[0.9] tracking-tight
               bg-gradient-to-r from-[#2D2D2D] via-[#4B4B4B] to-[#2D2D2D] bg-clip-text text-transparent
               transition-all duration-700
@@ -45,7 +45,7 @@ export default function Homepage() {
             </h1>
 
             <p className="
-              text-lg sm:text-xl md:text-2xl lg:text-3xl
+              text-base sm:text-lg md:text-xl lg:text-2xl
               text-[#5A5A5A]
               font-light leading-relaxed
               max-w-xl
@@ -64,8 +64,8 @@ export default function Homepage() {
                   group bg-gradient-to-r from-[#A3B899] to-[#9DBE9C]
                   hover:from-[#9DBE9C] hover:to-[#8CAF8C]
                   text-white font-semibold
-                  text-lg sm:text-xl
-                  px-8 sm:px-10 py-4 rounded-2xl
+                  text-base sm:text-lg
+                  px-6 sm:px-8 py-3 sm:py-4 rounded-2xl
                   transition-all duration-300
                   shadow-lg hover:shadow-2xl
                   hover:scale-105 active:scale-95
@@ -74,7 +74,7 @@ export default function Homepage() {
                   border border-white/20
                 ">
                   Get Started
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
 
@@ -83,8 +83,8 @@ export default function Homepage() {
                   bg-white/60 backdrop-blur-sm
                   hover:bg-white/80
                   text-[#4B4B4B] font-semibold
-                  text-lg sm:text-xl
-                  px-8 sm:px-10 py-4 rounded-2xl
+                  text-base sm:text-lg
+                  px-6 sm:px-8 py-3 sm:py-4 rounded-2xl
                   transition-all duration-300
                   shadow-md hover:shadow-lg
                   hover:scale-105 active:scale-95
@@ -97,10 +97,10 @@ export default function Homepage() {
           </div>
 
           {/* Right side (Image) */}
-          <div className="relative flex-1 max-w-lg lg:max-w-xl xl:max-w-2xl">
+          <div className="relative flex-1 max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
             <div className="relative">
               {/* Main Image */}
-              <div className="relative z-10 bg-white/20 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/30">
+              <div className="relative z-10 bg-white/20 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30">
                 <img
                   src="/images/home_bg.png"
                   alt="Luxury Perfume Collection"
@@ -109,8 +109,8 @@ export default function Homepage() {
               </div>
 
               {/* Decorative Elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-[#A3B899]/20 to-[#9DBE9C]/20 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-[#B8D4B0]/15 to-[#A3B899]/15 rounded-full blur-xl"></div>
+              <div className="absolute -top-4 -right-4 w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-[#A3B899]/20 to-[#9DBE9C]/20 rounded-full blur-xl"></div>
+              <div className="absolute -bottom-6 -left-6 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br from-[#B8D4B0]/15 to-[#A3B899]/15 rounded-full blur-xl"></div>
 
               {/* Floating Cards */}
               <div className="absolute top-4 -left-8 bg-white/80 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-white/40 animate-bounce delay-1000">
@@ -131,7 +131,14 @@ export default function Homepage() {
 
         </div>
 
-
+        {/* Footer */}
+        <footer className="w-full mt-auto pt-8 pb-4">
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-xs text-[#8B8B8B] text-center">
+              © 2025 Scent2Me. All rights reserved.
+            </p>
+          </div>
+        </footer>
 
       </div>
     </main>
