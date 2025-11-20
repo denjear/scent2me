@@ -40,7 +40,10 @@ export default function OnboardingPage() {
           </div>
 
           <button
-            onClick={() => router.push('/homepage')}
+            onClick={() => {
+              localStorage.removeItem('user');
+              router.push('/homepage');
+            }}
             className="flex items-center justify-center w-100 py-4 bg-[#f3eadf] hover:bg-[#e8d9ca] rounded-xl text-[#222] font-bold shadow-sm cursor-pointer text-lg"
           >
             <CircleUser className='mr-3 w-8 h-8'/>Login as Guest
